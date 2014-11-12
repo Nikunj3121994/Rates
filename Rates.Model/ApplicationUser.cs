@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Rates.Model
 {
-    public class ApplicationUser:IdentityUser
+    public class ApplicationUser:IdentityUser<int>
     {
     }
 }

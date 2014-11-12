@@ -15,23 +15,24 @@ namespace Rates.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationUserManager _userManager;
+        private UserManager<ApplicationUser> _userManager;
+        //private UserManager<ApplicationUser> гserManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
-            SignInManager = signInManager;
+            //SignInManager = signInManager;
         }
 
-        public ApplicationUserManager UserManager
+        public UserManager<ApplicationUser> UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager;
             }
             private set
             {
