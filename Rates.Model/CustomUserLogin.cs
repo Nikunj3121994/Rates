@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Rates.Model
 {
-    public class ApplicationUser : IdentityUser<long, CustomUserLogin, CustomUserRole, CustomUserClaim>
+    public class CustomUserLogin : IdentityUserLogin<long>
     {
     }
 }

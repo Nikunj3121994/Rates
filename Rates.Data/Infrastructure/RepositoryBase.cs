@@ -16,7 +16,7 @@ namespace Rates.Data.Infrastructure
         protected RepositoryBase(IDatabaseFactory databaseFactory)
         {
             DatabaseFactory = databaseFactory;
-            dbset = dataContext.Set<T>();
+            dbset = DataContext.Set<T>();
         }
 
         protected IDatabaseFactory DatabaseFactory

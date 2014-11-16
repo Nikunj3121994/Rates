@@ -39,6 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -153,6 +159,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\Bootstrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -239,6 +246,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rates.Data\Rates.Data.csproj">
+      <Project>{28cb4c48-bea2-456d-9ff3-1621b2aab441}</Project>
+      <Name>Rates.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rates.Model\Rates.Model.csproj">
+      <Project>{836bf077-768b-46e3-a01d-1e6edb0b4421}</Project>
+      <Name>Rates.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rates.Service\Rates.Service.csproj">
+      <Project>{27600be5-e98d-4fe5-b574-5c4563ef1fe6}</Project>
+      <Name>Rates.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

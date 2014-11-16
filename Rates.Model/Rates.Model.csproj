@@ -53,6 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationUser.cs" />
+    <Compile Include="CustomRole.cs" />
+    <Compile Include="CustomUserClaim.cs" />
+    <Compile Include="CustomUserLogin.cs" />
+    <Compile Include="CustomUserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

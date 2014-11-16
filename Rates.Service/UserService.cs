@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using Rates.Model;
 using Rates.Data.Repository;
 using System.Linq.Expressions;
+using Microsoft.AspNet.Identity;
 
 namespace Rates.Service
 {
     public interface IUserService
     {
         ApplicationUser GetUser(long userId);
-        IEnumerable<ApplicationUser> GetUsers();
+        IEnumerable<ApplicationUser> GetUsers(Expression<Func<ApplicationUser, bool>> where);
     }
 
     public class UserService : IUserService

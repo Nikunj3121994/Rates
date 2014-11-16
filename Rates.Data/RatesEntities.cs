@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Rates.Model;
 
 namespace Rates.Data
 {
-    class RatesEntities:IdentityDbContext
+    public class RatesEntities : IdentityDbContext<ApplicationUser, CustomRole, long, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
     }
 }
