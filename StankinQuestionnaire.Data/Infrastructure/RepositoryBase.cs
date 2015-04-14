@@ -63,13 +63,17 @@ namespace StankinQuestionnaire.Data.Infrastructure
 
         public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where = null)
         {
-            dataContext.Database.Log += s => Debug.WriteLine(s);
             if (where == null)
             {
                 return dbset.ToList();
             }
             return dbset.Where(where).ToList();
 
+        }
+
+        public virtual bool Any(Expression<Func<T, bool>> predicate)
+        {
+            return dbset.Any(predicate);
         }
 
         public virtual T Get(Expression<Func<T, bool>> where)

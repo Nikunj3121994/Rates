@@ -18,8 +18,7 @@
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select,
-textarea {
+select {
     max-width: 280px;
 }
 
@@ -37,4 +36,53 @@ textarea {
 
 .command-column {
     min-width: 100px;
+}
+
+.indicator-group {
+    margin-top: 20px;
+    border-top: 1px solid #000;
+}
+
+    .indicator-group:nth-of-type(1) {
+        border-top: none;
+    }
+
+.calculation-type {
+    margin: 10px;
+}
+
+.indicator {
+    border-top: 1px solid #ddd;
+}
+
+.indicator {
+    display: flex;
+}
+
+.indicator-group-row {
+    display: flex;
+    align-items: center;
+}
+
+.center-align {
+    display: flex;
+    align-items: center;
+}
+
+.view-calculation {
+    margin: 5px;
+    margin-top: 18px;
+}
+
+.view-calculation-btns {
+    margin-left: 10px;
+    max-width: 117px;
+}
+
+    .view-calculation-btns button {
+        width: 100%;
+    }
+
+.view-calculation-description {
+    max-width: 419px;
 }

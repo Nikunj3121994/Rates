@@ -12,7 +12,7 @@ using StankinQuestionnaire.Models;
 using StankinQuestionnaire.Model;
 using StankinQuestionnaire.Service;
 
-namespace StankinQuestionnaire.Controllers
+namespace StankinQuestionnaire.Areas.User.Controllers
 {
     [Authorize]
     public class AccountController : Controller

@@ -48,6 +48,10 @@ namespace StankinQuestionnaire
             bundles.Add(new ScriptBundle("~/bundles/multiselect").Include(
                 "~/Scripts/Modules/jquery.multi-select.js"
                 ));
+            bundles.Add(new ScriptBundle("~/bundles/Angular").Include(
+                "~/Scripts/angular.js",
+                "~/Scripts/angular-resource.js"
+                ));
 
             // Присвойте EnableOptimizations значение false для отладки. Дополнительные сведения
             // см. по адресу: http://go.microsoft.com/fwlink/?LinkId=301862

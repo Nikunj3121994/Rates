@@ -9,6 +9,8 @@ namespace StankinQuestionnaire.Model
 {
     public class ApplicationUser : IdentityUser<long, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
-        public IList<Document> Documents { get; set; }
+        public virtual IList<Document> Documents { get; set; }
+        public virtual Subdivision SubdivisionEmployee { get; set; }
+        public virtual Subdivision SubdivisionDirector { get; set; }
     }
 }

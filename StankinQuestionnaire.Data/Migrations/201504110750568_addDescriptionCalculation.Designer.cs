@@ -7,13 +7,13 @@ namespace StankinQuestionnaire.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class addTest : IMigrationMetadata
+    public sealed partial class addDescriptionCalculation : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addTest));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addDescriptionCalculation));
         
         string IMigrationMetadata.Id
         {
-            get { return "201503260542184_addTest"; }
+            get { return "201504110750568_addDescriptionCalculation"; }
         }
         
         string IMigrationMetadata.Source

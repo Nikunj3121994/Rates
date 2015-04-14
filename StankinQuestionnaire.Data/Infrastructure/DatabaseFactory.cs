@@ -12,6 +12,13 @@ namespace StankinQuestionnaire.Data.Infrastructure
         private StankinQuestionnaireEntities dataContext;
         public StankinQuestionnaireEntities Get()
         {
+            //if (dataContext == null)
+            //{
+            //    dataContext = new StankinQuestionnaireEntities();
+            //    dataContext.Configuration.LazyLoadingEnabled = true;
+            //    dataContext.Configuration.ProxyCreationEnabled = true;
+            //}
+            //return dataContext;
             return dataContext ?? (dataContext = new StankinQuestionnaireEntities());
         }
 

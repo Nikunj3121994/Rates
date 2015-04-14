@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculationService.cs" />
     <Compile Include="CalculationTypeService.cs" />
+    <Compile Include="DocumentService.cs" />
     <Compile Include="DocumentTypeService.cs" />
     <Compile Include="IndicatorGroupService.cs" />
     <Compile Include="IndicatorService.cs" />

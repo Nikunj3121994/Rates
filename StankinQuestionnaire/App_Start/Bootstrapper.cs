@@ -32,6 +32,7 @@ namespace StankinQuestionnaire
             var builder = new ContainerBuilder();
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             //builder.RegisterType<UserService>().As<IUserService>();
+
             builder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().InstancePerRequest();
 
             builder.RegisterAssemblyTypes(typeof(UserService).Assembly)

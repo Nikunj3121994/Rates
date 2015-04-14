@@ -15,6 +15,7 @@ namespace StankinQuestionnaire.Data.Infrastructure
         void Delete(Expression<Func<T, bool>> where);
         T GetById(long id);
         T Get(Expression<Func<T, bool>> where);
+        bool Any(Expression<Func<T, bool>> predicate);
         IEnumerable<T> GetMany(Expression<Func<T, bool>> where = null);
     }
 }
