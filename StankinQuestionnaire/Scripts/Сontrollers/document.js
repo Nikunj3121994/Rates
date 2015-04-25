@@ -1,4 +1,4 @@
-﻿var documentApp = angular.module('documents', ['arrayLengthFilter', 'documentServices']);
+﻿var documentApp = angular.module('documents', ['arrayLengthFilter', 'documentServices', 'maxPointFilter']);
 
 //function IndicatorGroup(indicatorGroupID, name, indicators) {
 //    this.IndicatorGroupID = indicatorGroupID;
@@ -37,8 +37,9 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
     $scope.addError = true;
     $scope.updateError = true;
 
-    $http.get('DocumentJSON?documentID=' + window.documentID).success(function (data) {
+    $http.get('DocumentJSON?documentID=' + documentData.documentID).success(function (data) {
         $scope.document = data;
+        $scope.document.Point = getCurrentPoint();
     });
 
     $scope.btnAdd = function (unitName, calculationTypeID) {
@@ -64,6 +65,7 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
                     CalculationTypeID: calculation.CalculationTypeID,
                     Description: calculation.Description
                 });
+                $scope.document.Point = getCurrentPoint();
                 $(selectors.addForm).modal('hide');
                 $scope.addForm.description = "";
             }
@@ -103,7 +105,8 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
 
     $scope.deleteCalculation = function (calculation) {
         DeleteCalculation.save({
-            calculationID: calculation.CalculationID
+            calculationID: calculation.CalculationID,
+            documentID: documentData.documentID
         },
         function (success) {
             $scope.deleteSuccess = false;
@@ -111,6 +114,7 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
             var index = findCalculationIndex(success.calculationID, fndCalculationType);
             if (index !== null) {
                 fndCalculationType.Calculations.splice(index, 1);
+                $scope.document.Point = getCurrentPoint();
                 if (fndCalculationType.Calculations.length < 1) {
                     $(selectors.viewCalculation).modal('hide');
                 }
@@ -180,5 +184,46 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
             }
         }
         return null;
+    }
+
+    function getCurrentPoint() {
+        var allPoint = 0;
+        var currentDocument = $scope.document;
+        currentDocument.IndicatorGroups.forEach(function (indicatorGroup, index) {
+            var indicatorGroupPoint = 0;
+            indicatorGroup.Indicators.forEach(function (indicator, index) {
+                var indicatorPoint = 0;
+                indicator.CalculationTypes.forEach(function (calculationType, index) {
+                    var pointForOne = calculationType.Point;
+                    var calculationTypePoint = pointForOne * calculationType.Calculations.length;
+                    if (calculationType.MaxPoint) {
+                        if (calculationTypePoint > calculationType.MaxPoint) {
+                            calculationTypePoint = calculationType.MaxPoint;
+                        }
+                    }
+                    indicatorPoint += calculationTypePoint;
+                })
+                indicatorGroupPoint += indicatorPoint;
+            })
+            if (indicatorGroupPoint > indicatorGroup.MaxPoint) {
+                indicatorGroupPoint = indicatorGroup.MaxPoint;
+            }
+            allPoint += indicatorGroupPoint;
+        })
+        if (allPoint > documentData.maxPoint) {
+            allPoint = documentData.maxPoint;
+        }
+        return allPoint;
+
+        //for (var i = 0; i < currentDocument.IndicatorGroups.length; i++) {
+        //    for (var j = 0; j < currentDocument.IndicatorGroups[i].Indicators.length; j++) {
+        //        for (var g = 0; g < currentDocument.IndicatorGroups[i].Indicators[j].CalculationTypes.length; g++) {
+        //            point+=
+        //            for (var h = 0; h < currentDocument.IndicatorGroups[i].Indicators[j].CalculationTypes[g].Calculations.length; h++) {
+
+        //            }
+        //        }
+        //    }
+        //}
     }
 }]);

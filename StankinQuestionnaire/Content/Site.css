@@ -39,8 +39,9 @@ select {
 }
 
 .indicator-group {
-    margin-top: 20px;
-    border-top: 1px solid #000;
+    margin-top: -1px;
+    border: 1px solid #DDDDDD;
+    border-top: 1px solid #6F6E6E;
 }
 
     .indicator-group:nth-of-type(1) {
@@ -85,4 +86,10 @@ select {
 
 .view-calculation-description {
     max-width: 419px;
+}
+
+.max-point-span {
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 600;
 }

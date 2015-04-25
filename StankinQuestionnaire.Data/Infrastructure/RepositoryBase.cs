@@ -34,6 +34,7 @@ namespace StankinQuestionnaire.Data.Infrastructure
         public virtual void Add(T entity)
         {
             dbset.Add(entity);
+            dataContext.SaveChanges();
         }
 
         public virtual void Update(T entity)

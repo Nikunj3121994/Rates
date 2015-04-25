@@ -83,6 +83,14 @@
     <Compile Include="Migrations\201504110750568_addDescriptionCalculation.Designer.cs">
       <DependentUpon>201504110750568_addDescriptionCalculation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504250437398_fixCalculation.cs" />
+    <Compile Include="Migrations\201504250437398_fixCalculation.Designer.cs">
+      <DependentUpon>201504250437398_fixCalculation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504250703503_addDocumentID.cs" />
+    <Compile Include="Migrations\201504250703503_addDocumentID.Designer.cs">
+      <DependentUpon>201504250703503_addDocumentID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CalculationRepository.cs" />
@@ -116,6 +124,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504110750568_addDescriptionCalculation.resx">
       <DependentUpon>201504110750568_addDescriptionCalculation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504250437398_fixCalculation.resx">
+      <DependentUpon>201504250437398_fixCalculation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504250703503_addDocumentID.resx">
+      <DependentUpon>201504250703503_addDocumentID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

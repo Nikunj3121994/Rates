@@ -1,9 +1,12 @@
-﻿@model long
+﻿@model StankinQuestionnaire.Areas.User.Models.DocumentConstructor
 @{
     ViewBag.Title = "Документ";
 }
 <script>
-    documentID=@Model;
+    var documentData={
+        documentID:@Model.DocumentID,
+        maxPoint:@Model.MaxPoint
+        };
 </script>
 @section scripts{
     @Scripts.Render("~/bundles/Angular")
@@ -13,8 +16,12 @@
 }
 <div ng-app="documents">
     <div ng-controller="DocumentType">
+        <div class="row indicator-group-row">
+            <h1 class="col-md-10">@Model.Name</h1><span class="col-md-2">Максимальное количество баллов за документ: @Model.MaxPoint</span>
+        </div>
+        <div class="alert alert-info" role="alert">Набрано баллов: {{document.Point}}</div>
         <div ng-repeat="indicatorGroup in document.IndicatorGroups" class="indicator-group container">
-            <div class="row indicator-group-row">
+            <div class="row  indicator-group-row">
                 <h2 class="col-md-6">{{indicatorGroup.Name}}</h2>
                 <span class="col-md-6 "> Максимальное количество баллов: {{indicatorGroup.MaxPoint}}</span>
             </div>
@@ -24,12 +31,12 @@
                     <div ng-repeat="calculationType in indicator.CalculationTypes" class="calculation-type">
                         <button type="button" ng-click="btnAdd(calculationType.UnitName,calculationType.CalculationTypeID)" class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        </button>   {{calculationType.Point}} баллов - {{calculationType.UnitName}} <a href="" ng-click="viewCalculations(calculationType)">{{calculationType.Calculations.length | viewLength}}</a>
+                        </button>   {{calculationType.Point}} баллов<span class="max-point-span"> {{calculationType.MaxPoint | maxPoint}}</span> - {{calculationType.UnitName}}  <a href="" ng-click="viewCalculations(calculationType)">{{calculationType.Calculations.length | viewLength}}</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="add-calculation" @*ng-show="visivbleAddForm"*@ tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+        <div class="modal fade" id="add-calculation" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

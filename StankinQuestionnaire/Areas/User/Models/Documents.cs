@@ -34,9 +34,15 @@ namespace StankinQuestionnaire.Areas.User.Models
                     Name = document.DocumentType.Name
                 });
             }
+            if (!Years.Any(y => y.Date.Year == DateTime.Now.Year))
+            {
+                Years.Add(new Year { Date = DateTime.Now, DocumentLinks = new List<DocumentLink>() });
+
+            }
         }
 
         public IList<Year> Years { get; set; }
+        public IEnumerable<DocumentType> AllowDouments { get; set; }
     }
     public class Year
     {
@@ -47,5 +53,12 @@ namespace StankinQuestionnaire.Areas.User.Models
     {
         public long ID { get; set; }
         public string Name { get; set; }
+    }
+
+    public class DocumentConstructor
+    {
+        public long DocumentID { get; set; }
+        public string Name { get; set; }
+        public int MaxPoint { get; set; }
     }
 }

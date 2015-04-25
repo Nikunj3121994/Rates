@@ -15,6 +15,7 @@ namespace StankinQuestionnaire.Data.Repository
     {
         IEnumerable<Document> GetManyWithDocumentType(Expression<Func<Document, bool>> where = null);
         Document GetDocumentWithAll(long documentID);
+        DocumentType GetDocumentType(long documentID);
     }
 
     public class DocumentRepository : RepositoryBase<Document>, IDocumentRepository
@@ -40,14 +41,25 @@ namespace StankinQuestionnaire.Data.Repository
 
         public Document GetDocumentWithAll(long documentID)
         {
+            DataContext.Database.Log += s => Debug.WriteLine(s);
             return DataContext.Documents
                                 .Where(d => d.DocumentID == documentID)
+                                .Include(d => d.Calculations)
                                 .Include(doc => doc.DocumentType.IndicatorsGroups
                                     .Select(ig => ig.Indicators
-                                        .Select(i => i.CalculationTypes
-                                            .Select(ct => ct.Calculations))))
+                                        .Select(i => i.CalculationTypes)))//.Select(ct => ct.Calculations.Where(c => c.DocumentID == documentID)
                                 .FirstOrDefault();
 
+        }
+
+        public DocumentType GetDocumentType(long documentID)
+        {
+            var documentType = DataContext
+                  .Documents
+                  .Where(d => d.DocumentID == documentID)
+                  .Select(d => d.DocumentType)
+                  .FirstOrDefault();
+            return documentType;
         }
     }
 }

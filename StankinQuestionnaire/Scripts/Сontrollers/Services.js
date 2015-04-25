@@ -17,6 +17,6 @@ documentServices.factory('UpdateCalculation', ['$resource',
 documentServices.factory('DeleteCalculation', ['$resource',
     function ($resource) {
         return $resource('DeleteCalculation', {}, {
-            query: { method: 'POST', params: { calculationID: null } }
+            query: { method: 'POST', params: { calculationID: null, documentID: null } }
         });
     }]);

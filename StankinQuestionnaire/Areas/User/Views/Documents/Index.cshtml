@@ -13,23 +13,41 @@
                             Год - @Model.Years[0].Date.Year
                         </a>
                     </h4>
-                    <div class="pull-right">
-                        <a href="" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Создать </a>
-                    </div>
-                    @*<button type="button" class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus"></span> Создать </button>*@
+                    @if (Model.AllowDouments.Count() > 0)
+                    {
+                        <ul class="pull-right">
+                            <li class="dropdown">
+                                <button type="button" class="dropdown-toggle btn btn-success" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-plus"></span> Создать  <span class="caret"></span></button>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    @foreach (var documentType in Model.AllowDouments)
+                                    {
+                                        <li>@Html.ActionLink(documentType.Name, "CreateDocument", new { documentType.DocumentTypeID })</li>
+                                    }
+                                </ul>
+
+                            </li>
+                        </ul>
+                    }
                     <div class="clearfix"></div>
                 </div>
             </div>
             <div id="collapse@(Model.Years[0].Date.Year)" class="panel-collapse collapse in" role="tabpanel">
-                <ul class="list-group">
-                    @foreach (var link in Model.Years[0].DocumentLinks)
-                    {
-                        <li class="list-group-item">@Html.ActionLink(link.Name, "Document", new { documentID = link.ID })</li>
-                    }
-                </ul>
-                @*<div class="list-group">
-
-                    </div>*@
+                @if (Model.Years[0].DocumentLinks.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var link in Model.Years[0].DocumentLinks)
+                        {
+                            <li class="list-group-item">@Html.ActionLink(link.Name, "Document", new { documentID = link.ID })</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <ul class="list-group">
+                        <li class="list-group-item">  У вас нет созданных документов</li>
+                    </ul>
+                }
             </div>
         </div>
 
