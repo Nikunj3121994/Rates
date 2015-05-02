@@ -58,7 +58,6 @@
     <Compile Include="CustomUserClaim.cs" />
     <Compile Include="CustomUserLogin.cs" />
     <Compile Include="CustomUserRole.cs" />
-    <Compile Include="DirectorsOfSubvision.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocumentType.cs" />
     <Compile Include="Indicator.cs" />

@@ -58,6 +58,7 @@
     <Compile Include="Configuration\CustomUserLogin.cs" />
     <Compile Include="Configuration\CustomUserRoleConfiguration.cs" />
     <Compile Include="Configuration\Document.cs" />
+    <Compile Include="Configuration\SubvisionConfiguration.cs" />
     <Compile Include="Infrastructure\DatabaseFactory.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\IDatabaseFactory.cs" />
@@ -67,31 +68,12 @@
     <Compile Include="Infrastructure\Store\CustomRoleStore.cs" />
     <Compile Include="Infrastructure\Store\CustomUserStore.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201504011403301_init.cs" />
-    <Compile Include="Migrations\201504011403301_init.Designer.cs">
-      <DependentUpon>201504011403301_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504011517516_reqCretor.cs" />
-    <Compile Include="Migrations\201504011517516_reqCretor.Designer.cs">
-      <DependentUpon>201504011517516_reqCretor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504011721064_maxPoint.cs" />
-    <Compile Include="Migrations\201504011721064_maxPoint.Designer.cs">
-      <DependentUpon>201504011721064_maxPoint.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504110750568_addDescriptionCalculation.cs" />
-    <Compile Include="Migrations\201504110750568_addDescriptionCalculation.Designer.cs">
-      <DependentUpon>201504110750568_addDescriptionCalculation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504250437398_fixCalculation.cs" />
-    <Compile Include="Migrations\201504250437398_fixCalculation.Designer.cs">
-      <DependentUpon>201504250437398_fixCalculation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201504250703503_addDocumentID.cs" />
-    <Compile Include="Migrations\201504250703503_addDocumentID.Designer.cs">
-      <DependentUpon>201504250703503_addDocumentID.cs</DependentUpon>
+    <Compile Include="Migrations\201505020943251_init.cs" />
+    <Compile Include="Migrations\201505020943251_init.Designer.cs">
+      <DependentUpon>201505020943251_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\SubdivisionWithUsersCount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CalculationRepository.cs" />
     <Compile Include="Repository\CalculationTypeRepository.cs" />
@@ -99,6 +81,7 @@
     <Compile Include="Repository\DocumentTypeRepository.cs" />
     <Compile Include="Repository\IndicatorGroupRepository.cs" />
     <Compile Include="Repository\IndicatorRepository.cs" />
+    <Compile Include="Repository\SubvisionRepository.cs" />
     <Compile Include="StankinQuestionnaireEntities.cs" />
     <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
@@ -113,23 +96,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504011403301_init.resx">
-      <DependentUpon>201504011403301_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504011517516_reqCretor.resx">
-      <DependentUpon>201504011517516_reqCretor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504011721064_maxPoint.resx">
-      <DependentUpon>201504011721064_maxPoint.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504110750568_addDescriptionCalculation.resx">
-      <DependentUpon>201504110750568_addDescriptionCalculation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504250437398_fixCalculation.resx">
-      <DependentUpon>201504250437398_fixCalculation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201504250703503_addDocumentID.resx">
-      <DependentUpon>201504250703503_addDocumentID.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201505020943251_init.resx">
+      <DependentUpon>201505020943251_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

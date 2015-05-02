@@ -12,13 +12,17 @@ namespace StankinQuestionnaire.Data.Migrations
                 c => new
                     {
                         CalculationID = c.Long(nullable: false, identity: true),
+                        Description = c.String(),
                         CalculationTypeID = c.Long(),
+                        DocumentID = c.Long(nullable: false),
                         Creator_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.CalculationID)
                 .ForeignKey("dbo.CalculationTypes", t => t.CalculationTypeID)
+                .ForeignKey("dbo.Documents", t => t.DocumentID, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.Creator_Id)
                 .Index(t => t.CalculationTypeID)
+                .Index(t => t.DocumentID)
                 .Index(t => t.Creator_Id);
             
             CreateTable(
@@ -28,6 +32,7 @@ namespace StankinQuestionnaire.Data.Migrations
                         CalculationTypeID = c.Long(nullable: false, identity: true),
                         UnitName = c.String(),
                         Point = c.Int(nullable: false),
+                        MaxPoint = c.Int(),
                         DateCreated = c.DateTime(nullable: false),
                         DateChanged = c.DateTime(nullable: false),
                         IndicatorID = c.Long(),
@@ -42,8 +47,6 @@ namespace StankinQuestionnaire.Data.Migrations
                     {
                         IndicatorID = c.Long(nullable: false, identity: true),
                         Name = c.String(),
-                        MaxPoint = c.Int(nullable: false),
-                        Comment = c.String(),
                         DateChanged = c.DateTime(nullable: false),
                         DateCreated = c.DateTime(nullable: false),
                         IndicatorGroupID = c.Long(),
@@ -58,6 +61,7 @@ namespace StankinQuestionnaire.Data.Migrations
                     {
                         IndicatorGroupID = c.Long(nullable: false, identity: true),
                         Name = c.String(),
+                        MaxPoint = c.Int(nullable: false),
                         DocumentTypeID = c.Long(),
                         DateChanged = c.DateTime(nullable: false),
                         DateCreated = c.DateTime(nullable: false),
@@ -87,11 +91,11 @@ namespace StankinQuestionnaire.Data.Migrations
                         DocumentID = c.Long(nullable: false, identity: true),
                         DateCreated = c.DateTime(nullable: false),
                         DateChanged = c.DateTime(nullable: false),
-                        Creator_Id = c.Long(),
+                        Creator_Id = c.Long(nullable: false),
                         DocumentType_DocumentTypeID = c.Long(),
                     })
                 .PrimaryKey(t => t.DocumentID)
-                .ForeignKey("dbo.AspNetUsers", t => t.Creator_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.Creator_Id, cascadeDelete: true)
                 .ForeignKey("dbo.DocumentTypes", t => t.DocumentType_DocumentTypeID)
                 .Index(t => t.Creator_Id)
                 .Index(t => t.DocumentType_DocumentTypeID);
@@ -101,6 +105,7 @@ namespace StankinQuestionnaire.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        SubvisionID = c.Int(),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -113,20 +118,11 @@ namespace StankinQuestionnaire.Data.Migrations
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
                         Subdivision_SubdivisionID = c.Int(),
-                        Subdivision_SubdivisionID1 = c.Int(),
-                        SubdivisionDirector_SubdivisionID = c.Int(),
-                        SubdivisionEmployee_SubdivisionID = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Subdivisions", t => t.Subdivision_SubdivisionID)
-                .ForeignKey("dbo.Subdivisions", t => t.Subdivision_SubdivisionID1)
-                .ForeignKey("dbo.Subdivisions", t => t.SubdivisionDirector_SubdivisionID)
-                .ForeignKey("dbo.Subdivisions", t => t.SubdivisionEmployee_SubdivisionID)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex")
-                .Index(t => t.Subdivision_SubdivisionID)
-                .Index(t => t.Subdivision_SubdivisionID1)
-                .Index(t => t.SubdivisionDirector_SubdivisionID)
-                .Index(t => t.SubdivisionEmployee_SubdivisionID);
+                .Index(t => t.Subdivision_SubdivisionID);
             
             CreateTable(
                 "dbo.AspNetUserClaims",
@@ -140,6 +136,16 @@ namespace StankinQuestionnaire.Data.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.Subdivisions",
+                c => new
+                    {
+                        SubdivisionID = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.SubdivisionID);
             
             CreateTable(
                 "dbo.AspNetUserLogins",
@@ -167,15 +173,6 @@ namespace StankinQuestionnaire.Data.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.Subdivisions",
-                c => new
-                    {
-                        SubdivisionID = c.Int(nullable: false, identity: true),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.SubdivisionID);
-            
-            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
@@ -184,6 +181,19 @@ namespace StankinQuestionnaire.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+            
+            CreateTable(
+                "dbo.SubdivisionApplicationUsers",
+                c => new
+                    {
+                        Subdivision_SubdivisionID = c.Int(nullable: false),
+                        ApplicationUser_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Subdivision_SubdivisionID, t.ApplicationUser_Id })
+                .ForeignKey("dbo.Subdivisions", t => t.Subdivision_SubdivisionID, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id, cascadeDelete: true)
+                .Index(t => t.Subdivision_SubdivisionID)
+                .Index(t => t.ApplicationUser_Id);
             
         }
         
@@ -194,24 +204,23 @@ namespace StankinQuestionnaire.Data.Migrations
             DropForeignKey("dbo.Indicators", "IndicatorGroupID", "dbo.IndicatorGroups");
             DropForeignKey("dbo.IndicatorGroups", "DocumentTypeID", "dbo.DocumentTypes");
             DropForeignKey("dbo.Documents", "DocumentType_DocumentTypeID", "dbo.DocumentTypes");
-            DropForeignKey("dbo.AspNetUsers", "SubdivisionEmployee_SubdivisionID", "dbo.Subdivisions");
-            DropForeignKey("dbo.AspNetUsers", "SubdivisionDirector_SubdivisionID", "dbo.Subdivisions");
-            DropForeignKey("dbo.AspNetUsers", "Subdivision_SubdivisionID1", "dbo.Subdivisions");
-            DropForeignKey("dbo.AspNetUsers", "Subdivision_SubdivisionID", "dbo.Subdivisions");
+            DropForeignKey("dbo.Documents", "Creator_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Documents", "Creator_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUsers", "Subdivision_SubdivisionID", "dbo.Subdivisions");
+            DropForeignKey("dbo.SubdivisionApplicationUsers", "ApplicationUser_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.SubdivisionApplicationUsers", "Subdivision_SubdivisionID", "dbo.Subdivisions");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Calculations", "DocumentID", "dbo.Documents");
             DropForeignKey("dbo.CalculationTypes", "IndicatorID", "dbo.Indicators");
             DropForeignKey("dbo.Calculations", "CalculationTypeID", "dbo.CalculationTypes");
+            DropIndex("dbo.SubdivisionApplicationUsers", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.SubdivisionApplicationUsers", new[] { "Subdivision_SubdivisionID" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.AspNetUsers", new[] { "SubdivisionEmployee_SubdivisionID" });
-            DropIndex("dbo.AspNetUsers", new[] { "SubdivisionDirector_SubdivisionID" });
-            DropIndex("dbo.AspNetUsers", new[] { "Subdivision_SubdivisionID1" });
             DropIndex("dbo.AspNetUsers", new[] { "Subdivision_SubdivisionID" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.Documents", new[] { "DocumentType_DocumentTypeID" });
@@ -220,11 +229,13 @@ namespace StankinQuestionnaire.Data.Migrations
             DropIndex("dbo.Indicators", new[] { "IndicatorGroupID" });
             DropIndex("dbo.CalculationTypes", new[] { "IndicatorID" });
             DropIndex("dbo.Calculations", new[] { "Creator_Id" });
+            DropIndex("dbo.Calculations", new[] { "DocumentID" });
             DropIndex("dbo.Calculations", new[] { "CalculationTypeID" });
+            DropTable("dbo.SubdivisionApplicationUsers");
             DropTable("dbo.AspNetRoles");
-            DropTable("dbo.Subdivisions");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.Subdivisions");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.Documents");

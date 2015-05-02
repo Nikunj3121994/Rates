@@ -1,0 +1,18 @@
+﻿@model StankinQuestionnaire.Areas.Admin.Models.DeleteObject
+<div class="modal fade bs-example-modal-sm" id="delete-form" data-delete-url="@Model.Url" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-grid-key-value="">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title">Вы действительно хотите удалить @Model.Name?</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-warning" id="btnConfirmDelete">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -53,6 +53,10 @@ namespace StankinQuestionnaire
                 "~/Scripts/angular-resource.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/Delete").Include(
+                "~/Scripts/Admin/DeleteAlert.js"
+                ));
+
             // Присвойте EnableOptimizations значение false для отладки. Дополнительные сведения
             // см. по адресу: http://go.microsoft.com/fwlink/?LinkId=301862
             BundleTable.EnableOptimizations = false;

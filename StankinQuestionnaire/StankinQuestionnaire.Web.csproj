@@ -181,10 +181,14 @@
     <Compile Include="Areas\Admin\Controllers\DocumentTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\IndicatorController.cs" />
     <Compile Include="Areas\Admin\Controllers\IndicatorGroupController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SubdivisionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\CalculationType.cs" />
+    <Compile Include="Areas\Admin\Models\DeleteObject.cs" />
     <Compile Include="Areas\Admin\Models\DocumentType.cs" />
     <Compile Include="Areas\Admin\Models\Indicator.cs" />
     <Compile Include="Areas\Admin\Models\IndicatorGroup.cs" />
+    <Compile Include="Areas\Admin\Models\User.cs" />
     <Compile Include="Areas\User\Controllers\DocumentsController.cs" />
     <Compile Include="Areas\User\Controllers\HomeController.cs" />
     <Compile Include="Areas\User\Models\DocumentJSON.cs" />
@@ -195,6 +199,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SelectListHelper.cs" />
+    <Compile Include="Helper\SubdivisionHelper.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
@@ -220,6 +226,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\switch.png" />
+    <Content Include="Scripts\Admin\DeleteAlert.js" />
     <Content Include="Scripts\Admin\Grid.js" />
     <Content Include="Scripts\Admin\Init.js" />
     <Content Include="Scripts\angular-mocks.js" />
@@ -249,6 +256,10 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Areas\User\Views\Documents\CreateDocument.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Subdivision\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_DeleteAlert.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Add.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\Сontrollers\document.js" />
@@ -315,6 +326,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Admin\" />
+    <Folder Include="Areas\Admin\Views\Users\" />
     <Folder Include="Areas\User\Views\Home\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
