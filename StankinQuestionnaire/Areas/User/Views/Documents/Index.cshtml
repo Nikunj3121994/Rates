@@ -2,83 +2,55 @@
 @{
     ViewBag.Title = "Документы";
 }
-@if (Model.Years.Count > 0)
-{
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-                <div class="panel-title">
-                    <h4 class="pull-left">
-                        <a class="collapsed" data-toggle="collapse" href="#collapse@(Model.Years[0].Date.Year)" aria-expanded="true">
-                            Год - @Model.Years[0].Date.Year
-                        </a>
-                    </h4>
-                    @if (Model.AllowDouments.Count() > 0)
-                    {
-                        <ul class="pull-right">
-                            <li class="dropdown">
-                                <button type="button" class="dropdown-toggle btn btn-success" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-plus"></span> Создать  <span class="caret"></span></button>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    @foreach (var documentType in Model.AllowDouments)
-                                    {
-                                        <li>@Html.ActionLink(documentType.Name, "CreateDocument", new { documentType.DocumentTypeID })</li>
-                                    }
-                                </ul>
-
-                            </li>
-                        </ul>
-                    }
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-            <div id="collapse@(Model.Years[0].Date.Year)" class="panel-collapse collapse in" role="tabpanel">
-                @if (Model.Years[0].DocumentLinks.Count > 0)
-                {
-                    <ul class="list-group">
-                        @foreach (var link in Model.Years[0].DocumentLinks)
-                        {
-                            <li class="list-group-item">@Html.ActionLink(link.Name, "Document", new { documentID = link.ID })</li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <ul class="list-group">
-                        <li class="list-group-item">  У вас нет созданных документов</li>
-                    </ul>
-                }
+@{var currentYear = Model.Years.First(y => y.IntYear == DateTime.Now.Year);}
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <div class="panel-title">
+                <h4 @*class="pull-left"*@>
+                    <a class="collapsed" data-toggle="collapse" href="#collapse@(currentYear.IntYear)" aria-expanded="true">
+                        Год - @currentYear.IntYear
+                    </a>
+                </h4>
             </div>
         </div>
+        <div id="collapse@(currentYear.IntYear)" class="panel-collapse collapse in" role="tabpanel">
+            @if (currentYear.DocumentLinks.Count > 0)
+            {
+                <ul class="list-group">
+                    @foreach (var link in currentYear.DocumentLinks)
+                    {
+                        <li class="list-group-item">@Html.ActionLink(link.Name, "Document", new { id = link.DocumentTypeID, year = currentYear.IntYear })</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <ul class="list-group">
+                    <li class="list-group-item">  У вас нет доступных документов</li>
+                </ul>
+            }
+        </div>
+    </div>
 
-        @foreach (var year in Model.Years.Skip(1))
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab">
-                    <h4 class="panel-title">
-                        <a class="collapsed" data-toggle="collapse" href="#collapse@(year.Date.Year)" aria-expanded="true">
-                            Год - @year.Date.Year
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse@(year.Date.Year)" class="panel-collapse collapse in" role="tabpanel">
-                    <ul class="list-group">
-                        @foreach (var link in year.DocumentLinks)
-                        {
-                            <li class="list-group-item">@Html.ActionLink(link.Name, "Document", new { documentID = link.ID })</li>
-                        }
-                    </ul>
-                    @*<div class="list-group">
-
-                        </div>*@
-                </div>
+    @foreach (var year in Model.Years.Where(y => y.IntYear != DateTime.Now.Year))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" href="#collapse@(year.IntYear)" aria-expanded="true">
+                        Год - @year.IntYear
+                    </a>
+                </h4>
             </div>
-        }
-    </div>
-}
-else
-{
-    <div class="alert alert-warning" role="alert">
-        У вас нет созданных документов.
-    </div>
-}
+            <div id="collapse@(year.IntYear)" class="panel-collapse collapse in" role="tabpanel">
+                <ul class="list-group">
+                    @foreach (var link in year.DocumentLinks)
+                    {
+                        <li class="list-group-item">@Html.ActionLink(link.Name, "Document", new { id = link.DocumentTypeID, year = year.IntYear })</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>

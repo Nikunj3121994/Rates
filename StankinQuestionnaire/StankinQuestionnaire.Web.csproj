@@ -88,6 +88,7 @@
     <Reference Include="Microsoft.Owin.Security.Twitter">
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -176,31 +177,46 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AcademicRankController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\CalculationTypeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CheckController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DocumentLogController.cs" />
     <Compile Include="Areas\Admin\Controllers\DocumentTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\IndicatorController.cs" />
     <Compile Include="Areas\Admin\Controllers\IndicatorGroupController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RatingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReviewerController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubdivisionController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\Models\AcademicRank.cs" />
     <Compile Include="Areas\Admin\Models\CalculationType.cs" />
+    <Compile Include="Areas\Admin\Models\Checked.cs" />
     <Compile Include="Areas\Admin\Models\DeleteObject.cs" />
+    <Compile Include="Areas\Admin\Models\DocumentLog.cs" />
     <Compile Include="Areas\Admin\Models\DocumentType.cs" />
     <Compile Include="Areas\Admin\Models\Indicator.cs" />
     <Compile Include="Areas\Admin\Models\IndicatorGroup.cs" />
+    <Compile Include="Areas\Admin\Models\Rating.cs" />
+    <Compile Include="Areas\Admin\Models\Reviewer.cs" />
+    <Compile Include="Areas\Admin\Models\Subdivision.cs" />
     <Compile Include="Areas\Admin\Models\User.cs" />
     <Compile Include="Areas\User\Controllers\DocumentsController.cs" />
     <Compile Include="Areas\User\Controllers\HomeController.cs" />
     <Compile Include="Areas\User\Models\DocumentJSON.cs" />
     <Compile Include="Areas\User\Models\Documents.cs" />
+    <Compile Include="Areas\User\Models\User.cs" />
     <Compile Include="Areas\User\UserAreaRegistration.cs" />
     <Compile Include="Areas\User\Controllers\AccountController.cs" />
     <Compile Include="Areas\User\Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Roles.cs" />
     <Compile Include="Helper\SelectListHelper.cs" />
     <Compile Include="Helper\SubdivisionHelper.cs" />
+    <Compile Include="Helper\UserHelper.cs" />
+    <Compile Include="Helper\UsersParser.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
@@ -220,18 +236,24 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Form.css" />
     <Content Include="Content\Modules\multi-select.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\switch.png" />
+    <Content Include="Scripts\Admin\AcademicRank.js" />
     <Content Include="Scripts\Admin\DeleteAlert.js" />
+    <Content Include="Scripts\Admin\DependSelect.js" />
     <Content Include="Scripts\Admin\Grid.js" />
     <Content Include="Scripts\Admin\Init.js" />
+    <Content Include="Scripts\Admin\InitMultiSelect.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -260,8 +282,29 @@
     <Content Include="Areas\Admin\Views\Subdivision\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_DeleteAlert.cshtml" />
     <Content Include="Areas\Admin\Views\User\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Subdivision\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Subdivision\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\User\AddFromFile.cshtml" />
+    <Content Include="Areas\Admin\Views\Reviewer\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Reviewer\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Check\Index.cshtml" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Areas\Admin\Views\User\Documents.cshtml" />
+    <Content Include="Areas\Admin\Views\Rating\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Rating\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Rating\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\AcademicRank\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AcademicRank\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\AcademicRank\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Subdivision\Users.cshtml" />
+    <Content Include="Areas\Admin\Views\DocumentLog\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Rating.cshtml" />
+    <Content Include="Areas\Admin\Views\Subdivision\Rating.cshtml" />
+    <Content Include="Areas\User\Views\Home\Rating.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\Сontrollers\directives.js" />
     <Content Include="Scripts\Сontrollers\document.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -286,7 +329,9 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\Сontrollers\filters.js" />
     <Content Include="Scripts\Сontrollers\Services.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -326,8 +371,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Admin\" />
-    <Folder Include="Areas\Admin\Views\Users\" />
-    <Folder Include="Areas\User\Views\Home\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
@@ -338,6 +381,10 @@
     <ProjectReference Include="..\StankinQuestionnaire.Core\StankinQuestionnaire.Core.csproj">
       <Project>{474dbcea-3d8b-4530-9c52-72c134577e87}</Project>
       <Name>StankinQuestionnaire.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StankinQuestionnaire.Data.Models\StankinQuestionnaire.Data.Models.csproj">
+      <Project>{669146fe-d2aa-47c2-8f1e-553e0889a948}</Project>
+      <Name>StankinQuestionnaire.Data.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\StankinQuestionnaire.Data\StankinQuestionnaire.Data.csproj">
       <Project>{28cb4c48-bea2-456d-9ff3-1621b2aab441}</Project>

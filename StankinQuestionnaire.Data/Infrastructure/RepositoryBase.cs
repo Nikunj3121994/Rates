@@ -46,7 +46,9 @@ namespace StankinQuestionnaire.Data.Infrastructure
         public virtual void Delete(T entity)
         {
             dbset.Remove(entity);
+            dataContext.SaveChanges();
         }
+
 
         public virtual void Delete(Expression<Func<T, bool>> where)
         {

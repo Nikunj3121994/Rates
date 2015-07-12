@@ -25,11 +25,13 @@ namespace StankinQuestionnaire
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/Form.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/InitGrid").Include(
                 "~/Scripts/Admin/Grid.js",
-                "~/Scripts/Admin/Init.js"
+                "~/Scripts/Admin/Init.js",
+                 "~/Scripts/Admin/InitMultiSelect.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/ladda").Include(
@@ -46,7 +48,8 @@ namespace StankinQuestionnaire
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/multiselect").Include(
-                "~/Scripts/Modules/jquery.multi-select.js"
+                "~/Scripts/Modules/jquery.multi-select.js",
+                "~/Scripts/Admin/InitMultiSelect.js"
                 ));
             bundles.Add(new ScriptBundle("~/bundles/Angular").Include(
                 "~/Scripts/angular.js",
@@ -55,6 +58,10 @@ namespace StankinQuestionnaire
 
             bundles.Add(new ScriptBundle("~/bundles/Delete").Include(
                 "~/Scripts/Admin/DeleteAlert.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/dependSelect").Include(
+                "~/Scripts/Admin/DependSelect.js"
                 ));
 
             // Присвойте EnableOptimizations значение false для отладки. Дополнительные сведения

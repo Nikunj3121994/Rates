@@ -48,10 +48,14 @@ namespace StankinQuestionnaire.Models
 
     public class LoginViewModel
     {
+        //[Required]
+        //[Display(Name = "Адрес электронной почты")]
+        //[EmailAddress]
+        //public string Email { get; set; }
+
         [Required]
-        [Display(Name = "Адрес электронной почты")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Табельный номер")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,10 +68,14 @@ namespace StankinQuestionnaire.Models
 
     public class RegisterViewModel
     {
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Адрес электронной почты")]
+        //public string Email { get; set; }
+
         [Required]
-        [EmailAddress]
-        [Display(Name = "Адрес электронной почты")]
-        public string Email { get; set; }
+        [Display(Name = "Логин")]
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 6)]

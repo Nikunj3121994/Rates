@@ -1,0 +1,155 @@
+﻿@model StankinQuestionnaire.Areas.Admin.Models.IndicatorViewModel
+@using StankinQuestionnaire.Web.Core.Status
+@{
+    ViewBag.Title = "Показатели";
+}
+
+@section styles{
+    @Styles.Render("~/Content/multiselect")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/multiselect")
+    @Scripts.Render("~/bundles/InitGrid")
+}
+
+@Html.GetStatus()
+<div class="alert alert-success hide" id="status-container" role="alert"></div>
+<button type="button" id="btnAdd" class="btn btn-primary">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Добавить
+</button>
+
+<div class="add-form" id="add-form">
+    @using (Html.BeginForm("Add", "Indicator", FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.AddIndicator.Name, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(m => m.AddIndicator.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Введите название" } })
+                @Html.ValidationMessageFor(m => m.AddIndicator.Name, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(m => m.AddIndicator.MaxPoint, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(m => m.AddIndicator.MaxPoint, new { @class = "form-control", placeholder = "Введите максимальное количество баллов" })
+                @Html.ValidationMessageFor(m => m.AddIndicator.MaxPoint, null, new { @class = "text-danger" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            @Html.LabelFor(m => m.CalculationTypeSelect, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.DropDownList("AddIndicator.CalculationTypeSelect",
+             new MultiSelectList(Model.CalculationTypeSelect, "CalculationTypeID", "UnitName"),
+                null, new { @class = "form-control grid-multiselect", multiple = "multiple"})
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="button" id="btnCancel" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-remove"></span> Отмена
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok aria-hidden=" true">
+                    </span> Сохранить
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="edit-form" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true" data-grid-key-value="">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title">Редактирование</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible error-alert" id="error-alert" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Ошибка!</strong> <span id="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                        <input class="form-control text-box single-line" data-val="true"
+                               data-val-required="Требуется поле Name." data-grid-indicator="name"
+                               name="Name" placeholder="Введите название" type="text">
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <label class="col-sm-2 control-label">MaxPoint</label>
+                    <div class="col-sm-10">
+                        <input class="text-box single-line" data-val="true"
+                               data-val-number="Значением поля MaxPoint должно быть число." data-val-required="Требуется поле MaxPoint."
+                               data-grid-indicator="maxpoint" name="MaxPoint" type="number">
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="CalculationTypes">CalculationTypes</label>
+                    <div class="col-sm-10">
+                        <select class="form-control grid-multiselect" id="CalculationTypes" data-grid-indicator="calculationtypes" multiple="multiple" name="CalculationTypes"></select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary ladda-button" data-size="xs" data-style="expand-left" id="btnSaveEdit"><span class="ladda-label">Сохранить</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-grid-key-value="">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title">Вы действительно хотите удалить запись?</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-warning" id="btnConfirmDelete">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped" id="grid" data-grid-setting-edit-url="Indicator/Edit" data-grid-setting-delete-url="Indicator/Delete" data-grid-key-name="IndicatorID" data-grid-indicators="name,calculationtypes">@*maxpoint,*@
+    <thead>
+        <tr>
+            <td>Название</td>
+            @*<td>Количество баллов</td>*@
+            <td>Дата изменения</td>
+            <td>Дата создания</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var indicator in Model.Indicators)
+        {
+            <tr data-grid-key="@indicator.IndicatorID">
+                <td data-grid-indicator="name">@indicator.Name</td>
+                @*<td data-grid-indicator="maxpoint">@indicator.MaxPoint</td>*@
+                <td data-grid-indicator="datechanged">@indicator.DateChanged </td>
+                <td data-grid-indicator="datecreated">@indicator.DateCreated</td>
+                <td class="command-column">
+                    <button type="button" class="btn btn-info btnEdit" data-toggle="modal" data-target="#edit-form">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-danger btnDelete" data-toggle="modal" data-target="#delete-form">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                        </span>
+                    </button>
+                </td>
+                <td data-grid-indicator="calculationtypes" class="data-column hide">
+                    @Html.DropDownListFor(m => indicator.CalculationTypes, indicator.CalculationTypes, new { @class = "form-control grid-multiselect", multiple = "multiple" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

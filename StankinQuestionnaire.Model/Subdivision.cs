@@ -8,7 +8,7 @@ namespace StankinQuestionnaire.Model
 {
     public class Subdivision
     {
-        public int SubdivisionID { get; set; }
+        public long SubdivisionID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual IList<ApplicationUser> Employees { get; set; }

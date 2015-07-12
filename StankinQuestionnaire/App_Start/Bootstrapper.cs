@@ -15,6 +15,7 @@ using StankinQuestionnaire.Data;
 using StankinQuestionnaire.Data.Infrastructure;
 using StankinQuestionnaire.Data.Repository;
 using StankinQuestionnaire.Mappings;
+using StankinQuestionnaire.Web.Core;
 
 
 namespace StankinQuestionnaire
@@ -42,6 +43,8 @@ namespace StankinQuestionnaire
             builder.RegisterAssemblyTypes(typeof(UserRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces().InstancePerRequest();
+
+            builder.RegisterType<Calculator>().As<ICalculator>().SingleInstance();
 
             builder.Register(c => new UserManager<ApplicationUser, long>(new CustomUserStore(new StankinQuestionnaireEntities())))
                 .As<UserManager<ApplicationUser, long>>().InstancePerRequest();

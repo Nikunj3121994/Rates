@@ -18,6 +18,22 @@ namespace StankinQuestionnaire.Helper
                 notAllowSelect.Text = "Нет вариантов для выбора";
                 selectList.Add(notAllowSelect);
             }
+            //else
+            //{
+            //    var notSelected = new SelectListItem { Disabled = true, Selected = true, Text = "Не выбрано" };
+            //    selectList.Add(notSelected);
+            //}
+        }
+
+        public static void SetSelect(this IEnumerable<SelectListItem> selectList, string value)
+        {
+            foreach (var select in selectList)
+            {
+                if (select.Value == value)
+                {
+                    select.Selected = true;
+                }
+            }
         }
     }
 }

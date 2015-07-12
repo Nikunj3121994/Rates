@@ -1,0 +1,36 @@
+﻿@model StankinQuestionnaire.Areas.Admin.Models.UsersFromFile
+@{
+    ViewBag.Title = "Добавление пользователей из файла";
+}
+
+@using (Html.BeginForm("AddFromFile", "User", FormMethod.Post, htmlAttributes: new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.File, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @*@Html.EditorFor()*@
+            @*<input type="file" name="usersFile" />*@
+            @Html.TextBoxFor(m => m.File, new
+                {
+                    @class = "form-control",
+                    type = "file"
+                })
+            @Html.ValidationMessageFor(m => m.File, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EncodeType, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EnumDropDownListFor(m => m.EncodeType, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.EncodeType, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok aria-hidden=" true">
+                </span> Сохранить
+            </button>
+        </div>
+    </div>
+}

@@ -48,7 +48,7 @@ namespace StankinQuestionnaire.Areas.Admin.Models
 
     public class IndicatorGroupSelect
     {
-        public int IndicatorGroupID { get; set; }
+        public long IndicatorGroupID { get; set; }
         public string Name { get; set; }
     }
 }

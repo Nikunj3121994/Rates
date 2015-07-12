@@ -1,34 +1,24 @@
-﻿var documentApp = angular.module('documents', ['arrayLengthFilter', 'documentServices', 'maxPointFilter']);
+﻿var documentApp = angular.module('documents', ['arrayLengthFilter', 'documentServices', 'maxPointFilter', 'customControl']);
 
-//function IndicatorGroup(indicatorGroupID, name, indicators) {
-//    this.IndicatorGroupID = indicatorGroupID;
-//    this.Name = name;
-//    this.Indicators = indicators;
-//}
 
-//function Indicator(indicatorID, name, maxPoint, calculationTypes) {
-//    this.IndicatorID = IndicatorID;
-//    this.Name = name;
-//    this.MaxPoint = maxPoint;
-//    this.CalculationTypes = calculationTypes;
-//}
 
-//function CalculationType(calculationTypeID, unitName, point, calculations) {
-//    this.CalculationTypeID = CalculationTypeID;
-//    this.UnitName = UnitName;
-//    this.Point = Point;
-//    this.Calculations = Calculations;
-//}
-
-//function Сalculation(calculationID, calculationTypeID) {
-//    this.CalculationID = calculationID;
-//    this.CalculationTypeID = calculationTypeID;
-//}
-documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'DeleteCalculation', 'UpdateCalculation', function ($scope, $http, AddCalculation, DeleteCalculation, UpdateCalculation) {
+documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'DeleteCalculation', 'UpdateCalculation', 'ChangeChecked', function ($scope, $http, AddCalculation, DeleteCalculation, UpdateCalculation, ChangeChecked) {
     selectors = {
         addForm: "#add-calculation",
         viewCalculation: "#view-calculation"
     }
+
+    var styles = {
+        editable: 'padding: 10px;\
+        outline: 2px dashed #A3A3A3;'
+    }
+
+    var roles = {
+        Checker: "Checker",
+        Admin: "Admin",
+        Head: "Head"
+    }
+
     $scope.addForm = {
         title: "",
         calculationTypeID: "",
@@ -36,17 +26,39 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
     }
     $scope.addError = true;
     $scope.updateError = true;
-
-    $http.get('DocumentJSON?documentID=' + documentData.documentID).success(function (data) {
-        $scope.document = data;
-        $scope.document.Point = getCurrentPoint();
-    });
+    var calculationForDelete = null;
+    if (documentData.mode !== '') {
+        $http.get('../DocumentJSON?documentID=' + documentData.documentID + '&mode=' + documentData.mode).success(function (data) {
+            $scope.mode = documentData.mode;
+            $scope.document = data;
+            $scope.document.Point = getCurrentPoint();
+        });
+    }
+    else {
+        $http.get('../DocumentJSON?documentID=' + documentData.documentID).success(function (data) {
+            $scope.document = data;
+            $scope.document.Point = getCurrentPoint();
+        });
+    }
 
     $scope.btnAdd = function (unitName, calculationTypeID) {
         $scope.addForm.title = unitName;
         $scope.addForm.calculationTypeID = calculationTypeID;
         $scope.addError = true;
         $(selectors.addForm).modal('show');
+    }
+
+    $scope.editable = function (calculation) {
+        if (calculation.editable && calculation.editable === true)
+            return true;
+        return false;
+    }
+
+    $scope.calculationStyle = function (calculationEdit) {
+        if (calculationEdit) {
+            return styles.editable;
+        }
+        return '';
     }
 
     $scope.saveAdd = function () {
@@ -75,6 +87,10 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
         });
     }
 
+    $scope.editCalculation = function (calculation) {
+        calculation.editable = true;
+    }
+
     $scope.viewCalculations = function (calcType) {
         $scope.currentCalculations = calcType.Calculations;
         $scope.updateError = true;
@@ -84,7 +100,6 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
     }
 
     $scope.saveCalculation = function (calculation) {
-        console.log(calculation);
         UpdateCalculation.save({
             calculation: calculation
         },
@@ -96,6 +111,7 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
                 if (fndCalculation != null) {
                     fndCalculation.Description = saveCalculation.Description;
                 }
+                calculation.editable = false;
             }
         }
         , function (error) {
@@ -103,7 +119,12 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
         });
     }
 
-    $scope.deleteCalculation = function (calculation) {
+    $scope.setCalculationForDelete = function (calculation) {
+        calculationForDelete = calculation;
+    }
+
+    $scope.deleteCalculation = function () {
+        var calculation = calculationForDelete;
         DeleteCalculation.save({
             calculationID: calculation.CalculationID,
             documentID: documentData.documentID
@@ -120,6 +141,16 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
                 }
             }
         })
+    }
+
+    $scope.changeCheck = function (indicatorGroup) {
+        ChangeChecked.save(
+            {
+                DocumentID: documentData.documentID,
+                IndicatorGroupID: indicatorGroup.IndicatorGroupID,
+                Checked: indicatorGroup.Checked
+            }
+        )
     }
 
     function findCalcaultionType(calculationTypeID) {
@@ -214,16 +245,5 @@ documentApp.controller('DocumentType', ['$scope', '$http', 'AddCalculation', 'De
             allPoint = documentData.maxPoint;
         }
         return allPoint;
-
-        //for (var i = 0; i < currentDocument.IndicatorGroups.length; i++) {
-        //    for (var j = 0; j < currentDocument.IndicatorGroups[i].Indicators.length; j++) {
-        //        for (var g = 0; g < currentDocument.IndicatorGroups[i].Indicators[j].CalculationTypes.length; g++) {
-        //            point+=
-        //            for (var h = 0; h < currentDocument.IndicatorGroups[i].Indicators[j].CalculationTypes[g].Calculations.length; h++) {
-
-        //            }
-        //        }
-        //    }
-        //}
     }
 }]);

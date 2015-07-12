@@ -1,0 +1,16 @@
+﻿@model StankinQuestionnaire.Areas.Admin.Models.CheckedViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@foreach (var group in Model.Groups)
+{
+    <h4>@group.Name</h4>
+    <div class="list-group">
+        @foreach (var document in group.Documents)
+        {
+            @*@Html.ActionLink(document.Name, "Document", "Documents", new { id = document.DocumentTypeID, year = document.Year, area = "User", mode = "Admin", creatorID = document.CreatorID }, null)*@
+            <a href="@Url.Action("Document", "Documents", new { id = document.DocumentTypeID, year = document.Year, area = "User", mode = "Checker", creatorID = document.CreatorID })" class="list-group-item @(document.CountChecked - document.MaxChecked == 0 ? "list-group-item-success" : "list-group-item-warning")">@document.CountChecked/@document.MaxChecked @document.Name</a>
+        }
+    </div>
+}

@@ -7,6 +7,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
+using StankinQuestionnaire.Web.Core.DoubleBind;
 
 namespace StankinQuestionnaire
 {
@@ -18,6 +19,7 @@ namespace StankinQuestionnaire
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            ModelBinders.Binders.Add(typeof(double), new DoubleModelBinder());
 
             Bootstrapper.Run();
         }

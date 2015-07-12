@@ -1,0 +1,23 @@
+﻿@model IEnumerable<StankinQuestionnaire.Areas.Admin.Models.DocumentLogViewModel>
+@using StankinQuestionnaire.Core.Enums;
+@{
+    ViewBag.Title = "Index";
+}
+
+<ul class="list-group">
+    @foreach (var log in Model)
+    {
+        switch (log.Action)
+        {
+            case DocumentActionEnum.Add:
+                <li class="list-group-item list-group-item-success"><a href="@Url.Action("Edit", "User", new {id=log.UserId })">@log.UserName</a> @log.ActionName показатель <span class="quot">"@log.NewDescription"</span> в документ <a href="@Url.Action("Document", "Documents", new { id = log.DocumentTypeId, year = log.DocumentYear, area = "User", mode = "Admin", creatorID = log.DocumentCreatorId })"> "@log.DocumentName" автора @log.DocumentCreatorName за @log.DocumentYear год </a> <span class="log-date">@log.ActionDate</span>  </li>
+                break;
+            case DocumentActionEnum.Delete:
+            <li class="list-group-item list-group-item-danger"><a href="@Url.Action("Edit", "User", new {id=log.UserId })">@log.UserName</a> @log.ActionName показатель <span class="quot">"@log.NewDescription"</span> в документе <a href="@Url.Action("Document", "Documents", new { id = log.DocumentTypeId, year = log.DocumentYear, area = "User", mode = "Admin", creatorID = log.DocumentCreatorId })">"@log.DocumentName" автора @log.DocumentCreatorName за @log.DocumentYear год</a> <span class="log-date">@log.ActionDate</span>   </li>
+                break;
+            case DocumentActionEnum.Update:
+            <li class="list-group-item list-group-item-warning"><a href="@Url.Action("Edit", "User", new {id=log.UserId })">@log.UserName</a> @log.ActionName документ показатель в документе <a href="@Url.Action("Document", "Documents", new { id = log.DocumentTypeId, year = log.DocumentYear, area = "User", mode = "Admin", creatorID = log.DocumentCreatorId })">"@log.DocumentName" автора @log.DocumentCreatorName за @log.DocumentYear год.</a> Было: <span class="quot">"@log.OldDescription"</span> Стало: <span class="quot">"@log.NewDescription"</span> <span class="log-date">@log.ActionDate</span>   </li>
+                break;
+        }
+    }
+</ul>

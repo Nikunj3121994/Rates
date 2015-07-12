@@ -51,4 +51,10 @@ namespace StankinQuestionnaire.Areas.Admin.Models
         public DocumentTypeAddModel AddDocumentType { get; set; }
         public IEnumerable<IndicatorGroupSelect> IndicatorGroupSelect { get; set; }
     }
+
+    public class DocumentTypeSelect
+    {
+        public long DocumentTypeID { get; set; }
+        public string Name { get; set; }
+    }
 }

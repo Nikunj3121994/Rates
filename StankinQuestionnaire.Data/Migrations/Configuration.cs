@@ -1,12 +1,16 @@
 namespace StankinQuestionnaire.Data.Migrations
 {
+    using StankinQuestionnaire.Core.Enums;
     using StankinQuestionnaire.Model;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Web.Helpers;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<StankinQuestionnaire.Data.StankinQuestionnaireEntities>
+    internal sealed class Configuration :
+        DbMigrationsConfiguration<StankinQuestionnaire.Data.StankinQuestionnaireEntities>
     {
         public Configuration()
         {
@@ -15,18 +19,32 @@ namespace StankinQuestionnaire.Data.Migrations
 
         protected override void Seed(StankinQuestionnaire.Data.StankinQuestionnaireEntities context)
         {
-            //  This method will be called after migrating to the latest version.
-            context.Roles.AddOrUpdate(r => r.Name, new[] { new CustomRole { Name = "Admin" } });
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            const string adminPassword = "QdASdaF@rQAF!234";
+
+            context.Roles.AddOrUpdate(p => p.Name,
+                new CustomRole { Id = 1, Name = RoleEnum.Admin.ToString() },
+                new CustomRole { Id = 2, Name = RoleEnum.Reviewer.ToString() });
+
+
+            var user = new ApplicationUser
+            {
+                EmailConfirmed = false,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+                PasswordHash = Crypto.HashPassword(adminPassword),
+                UserName = "Admin",
+            };
+            context.Users.AddOrUpdate(p => p.UserName, user);
+            var customUserRole = context.Set<CustomUserRole>();
+            customUserRole.AddOrUpdate(usRo => new
+            {
+                usRo.RoleId,
+                usRo.UserId
+            },
+                new CustomUserRole { RoleId = 1, UserId = 1 });
         }
     }
 }

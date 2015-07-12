@@ -1,0 +1,81 @@
+﻿@model StankinQuestionnaire.Areas.Admin.Models.AcademicRankViewModel
+@{
+    ViewBag.Title = "Добавление";
+}
+@section scripts{
+    <script src="~/Scripts/Admin/AcademicRank.js"></script>
+}
+<div class="hide" id="template-container">
+    <div class="form-inline rank-line" data-index="%0">
+        <input type="hidden" name="Groups.Index" value="%0" />
+        <div class="form-group">
+            <label for="Groups_%0__Name">Name</label>
+            <input class="form-control text-box single-line valid" id="Groups_%0__Name" name="Groups[%0].Name" type="text" value="" aria-invalid="false">
+        </div>
+        <div class="form-group">
+            <label for="Groups_%0__MaxLimit">MaxLimit</label>
+            <input class="form-control text-box single-line" data-val="true" data-val-number="Значением поля MaxLimit должно быть число." data-val-required="Требуется поле MaxLimit." id="Groups_%0__MaxLimit" name="Groups[%0].MaxLimit" type="number" value="">
+        </div>
+        <div class="form-group">
+            <label for="Groups_%0__MinLimit">MinLimit</label>
+            <input class="form-control text-box single-line" data-val="true" data-val-number="Значением поля MinLimit должно быть число." data-val-required="Требуется поле MinLimit." id="Groups_%0__MinLimit" name="Groups[%0].MinLimit" type="number" value="">
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-danger btn-delete" aria-label="Left Align">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("Add", "Rating", FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title, new { @class = " control-label" })
+        @*<div>*@
+        @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Введите название" } })
+        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        @*</div>*@
+    </div>
+    <div class="control-group">
+        @for (int i = 0; i < Model.Groups.Count; i++)
+        {
+            <div class="form-inline rank-line" data-index="@i">
+                <input type="hidden" name="Groups.Index" value="@i" />
+                @Html.HiddenFor(m => m.Groups[i].RatingGroupID)
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Groups[i].Name)
+                    @Html.EditorFor(m => m.Groups[i].Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Groups[i].MaxLimit)
+                    @Html.EditorFor(m => m.Groups[i].MaxLimit, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Groups[i].MinLimit)
+                    @Html.EditorFor(m => m.Groups[i].MinLimit, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-danger btn-delete" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <div>
+            <button type="button" class="btn btn-info" id="btn-add-rank">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true">
+                </span> Добавить
+            </button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true">
+                </span> Сохранить
+            </button>
+        </div>
+    </div>
+}

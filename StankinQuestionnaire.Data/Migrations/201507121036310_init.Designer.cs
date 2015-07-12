@@ -13,7 +13,7 @@ namespace StankinQuestionnaire.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201505020943251_init"; }
+            get { return "201507121036310_init"; }
         }
         
         string IMigrationMetadata.Source

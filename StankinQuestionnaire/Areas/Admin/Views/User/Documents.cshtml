@@ -1,0 +1,56 @@
+﻿@model StankinQuestionnaire.Areas.User.Models.DocumentsViewModel
+@{
+    ViewBag.Title = "Документы";
+}
+@{var currentYear = Model.Years.First(y => y.IntYear == DateTime.Now.Year);}
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <div class="panel-title">
+                <h4 @*class="pull-left"*@>
+                    <a class="collapsed" data-toggle="collapse" href="#collapse@(currentYear.IntYear)" aria-expanded="true">
+                        Год - @currentYear.IntYear
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div id="collapse@(currentYear.IntYear)" class="panel-collapse collapse in" role="tabpanel">
+            @if (currentYear.DocumentLinks.Count > 0)
+            {
+                <ul class="list-group">
+                    @foreach (var link in currentYear.DocumentLinks)
+                    {
+                        <li class="list-group-item">@Html.ActionLink(link.Name, "Document", "Documents", new { id = link.DocumentTypeID, year = currentYear.IntYear, area = "User", mode = "Admin", creatorID = Model.CreatorID }, null)</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <ul class="list-group">
+                    <li class="list-group-item">  У вас нет доступных документов</li>
+                </ul>
+            }
+        </div>
+    </div>
+
+    @foreach (var year in Model.Years.Where(y => y.IntYear != DateTime.Now.Year))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" href="#collapse@(year.IntYear)" aria-expanded="true">
+                        Год - @year.IntYear
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse@(year.IntYear)" class="panel-collapse collapse in" role="tabpanel">
+                <ul class="list-group">
+                    @foreach (var link in year.DocumentLinks)
+                    {
+                        <li class="list-group-item">@Html.ActionLink(link.Name, "Document","Documents", new { id = link.DocumentTypeID, year = year.IntYear, area = "User", mode = "Admin", creatorID = Model.CreatorID }, null)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>

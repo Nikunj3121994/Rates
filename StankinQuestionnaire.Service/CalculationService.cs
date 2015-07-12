@@ -14,7 +14,7 @@ namespace StankinQuestionnaire.Service
     {
         Calculation GetCalculation(long userId);
         IEnumerable<Calculation> GetCalculations(Expression<Func<Calculation, bool>> where);
-        IEnumerable<Calculation> GetUserCalculationsByCalculationTypes(IEnumerable<long> calculationTypeIDs, long userID);
+        //IEnumerable<Calculation> GetUserCalculationsByCalculationTypes(IEnumerable<long> calculationTypeIDs, long userID);
         void AddCalculation(Calculation calculation);
         bool CalculationAlowUser(long calculationID, long userID);
         void UpdateCalculation(Calculation calculation);
@@ -42,11 +42,11 @@ namespace StankinQuestionnaire.Service
             return _calculationRepository.GetMany(where);
         }
 
-        public IEnumerable<Calculation> GetUserCalculationsByCalculationTypes(IEnumerable<long> calculationTypeIDs, long userID)
-        {
-            return _calculationRepository
-                .GetMany(c => c.Creator.Id == userID && c.CalculationTypeID.HasValue && calculationTypeIDs.Contains(c.CalculationTypeID.Value));
-        }
+        //public IEnumerable<Calculation> GetUserCalculationsByCalculationTypes(IEnumerable<long> calculationTypeIDs, long userID)
+        //{
+        //    return _calculationRepository
+        //        .GetMany(c => c.Owner.Id == userID && c.CalculationTypeID.HasValue && calculationTypeIDs.Contains(c.CalculationTypeID.Value));
+        //}
 
         public void AddCalculation(Calculation calculation)
         {
@@ -62,7 +62,8 @@ namespace StankinQuestionnaire.Service
 
         public bool CalculationAlowUser(long calculationID, long userID)
         {
-            return _calculationRepository.Any(c => c.Creator.Id == userID && c.CalculationID == calculationID);
+            return _calculationRepository.IsCalculationAlowUser(calculationID, userID);
+            //return _calculationRepository.Any(c => c.Owner.Id == userID && c.CalculationID == calculationID);
         }
 
         public void DeleteCalculation(long calculationID)

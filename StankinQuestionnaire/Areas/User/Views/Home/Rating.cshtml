@@ -1,0 +1,30 @@
+﻿@model IList<StankinQuestionnaire.Areas.User.Models.UserRating>
+@{
+    ViewBag.Title = "Rating";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Категория
+            </th>
+            <th>
+                Количество балов
+            </th>
+            <th>
+                Год
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rating in Model.OrderByDescending(r => r.Year))
+        {
+            <tr>
+                <td>@rating.Category</td>
+                <td>@rating.Point</td>
+                <td>@rating.Year</td>
+            </tr>
+        }
+    </tbody>
+</table>

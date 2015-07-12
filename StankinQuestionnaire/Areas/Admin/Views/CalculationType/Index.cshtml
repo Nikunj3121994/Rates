@@ -1,0 +1,148 @@
+﻿@using StankinQuestionnaire.Web.Core.Status
+@model StankinQuestionnaire.Areas.Admin.Models.CalculationTypeViewModel
+@{
+    ViewBag.Title = "Типы подсчета";
+}
+@Html.GetStatus()
+<div class="alert alert-success hide" id="status-container" role="alert"></div>
+<button type="button" id="btnAdd" class="btn btn-primary">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Добавить
+</button>
+<div class="add-form" id="add-form">
+    @using (Html.BeginForm("Add", "CalculationType", FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.AddCalculationType.UnitName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(m => m.AddCalculationType.UnitName, new { htmlAttributes = new { @class = "form-control", placeholder = "Введите название" } })
+                @Html.ValidationMessageFor(m => m.AddCalculationType.UnitName, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.AddCalculationType.Point, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(m => m.AddCalculationType.Point, new { @class = "form-control", placeholder = "Введите количество баллов" })
+                @Html.ValidationMessageFor(m => m.AddCalculationType.Point, null, new { @class = "text-danger" })
+            </div>
+        </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddCalculationType.MaxPoint, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(m => m.AddCalculationType.MaxPoint, new { @class = "form-control", placeholder = "Максимальное количество баллов можно оставить пустым" })
+            @Html.ValidationMessageFor(m => m.AddCalculationType.MaxPoint, null, new { @class = "text-danger" })
+        </div>
+    </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="button" id="btnCancel" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-remove"></span> Отмена
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok aria-hidden=" true">
+                    </span> Сохранить
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="edit-form" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true" data-grid-key-value="">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title">Редактирование</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible error-alert" id="error-alert" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Ошибка!</strong> <span id="error-text"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="AddCalculationType_UnitName">UnitName</label>
+                    <div class="col-sm-10">
+                        <input class="form-control text-box single-line" data-val="true"
+                               data-val-required="Требуется поле UnitName." data-grid-indicator="unitname"
+                               name="UnitName" placeholder="Введите название" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="AddCalculationType_Point">Point</label>
+                    <div class="col-sm-10">
+                        <input class="text-box single-line" data-val="true"
+                               data-val-number="Значением поля Point должно быть число." data-val-required="Требуется поле Point."
+                               data-grid-indicator="point" name="Point" type="number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="AddCalculationType_MaxPoint">MaxPoint</label>
+                    <div class="col-sm-10">
+                        <input class="text-box single-line" data-val="true"
+                               data-val-number="Значением поля Point должно быть число." data-val-required="Требуется поле MaxPoint."
+                               data-grid-indicator="maxpoint" name="MaxPoint" type="number">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary ladda-button" data-size="xs" data-style="expand-left" id="btnSaveEdit"><span class="ladda-label">Сохранить</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-grid-key-value="">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title">Вы действительно хотите удалить запись?</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-warning" id="btnConfirmDelete">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped" id="grid" data-grid-setting-edit-url="CalculationType/Edit" data-grid-setting-delete-url="CalculationType/Delete" data-grid-key-name="CalculationTypeID" data-grid-indicators="unitname,point,maxpoint">
+        <thead>
+            <tr>
+                <td>Название</td>
+                <td>Количество баллов</td>
+                <td>Максимально баллов</td>
+                <td>Дата изменения</td>
+                <td>Дата создания</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var calculationType in Model.CalculationTypes)
+            {
+                <tr data-grid-key="@calculationType.CalculationTypeID">
+                    <td data-grid-indicator="unitname">@calculationType.UnitName</td>
+                    <td data-grid-indicator="point">@calculationType.Point</td>
+                    <td data-grid-indicator="maxpoint">@calculationType.MaxPoint</td>
+                    <td data-grid-indicator="datechanged">@calculationType.DateChanged </td>
+                    <td data-grid-indicator="datecreated">@calculationType.DateCreated</td>
+                    <td class="command-column">
+                        <button type="button" class="btn btn-info btnEdit" data-toggle="modal" data-target="#edit-form">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                            </span>
+                        </button>
+                        <button type="button" class="btn btn-danger btnDelete" data-toggle="modal" data-target="#delete-form">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/InitGrid")
+}

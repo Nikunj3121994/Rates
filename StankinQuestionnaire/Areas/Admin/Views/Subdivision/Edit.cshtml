@@ -1,0 +1,58 @@
+﻿@using StankinQuestionnaire.Web.Core.Status
+@model StankinQuestionnaire.Areas.Admin.Models.SubdivisionEditModel
+@{
+    ViewBag.Title = "Релактирование подразделения";
+}
+
+@section styles{
+    @Styles.Render("~/Content/multiselect")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/multiselect")
+}
+@Html.GetStatus()
+@using (Html.BeginForm("Edit", "Subdivision", FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(m => m.SubdivisionID)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Введите ФИО" } })
+            @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Введите email" } })
+            @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Users, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @*@Html.DropDownListFor(m => m.UsersID, Model.Users, new { @class = "form-control", multiple = "multiple" },) @*grid-multiselect*@
+            <select name="UsersID" multiple="multiple" class="form-control grid-multiselect">
+                @foreach (var director in Model.Users)
+                {
+                    <option value="@director.Value" selected="@director.Selected">@director.Text</option>
+                }
+            </select>
+            @*@Html.DropDownList("UsersID", new MultiSelectList(Model.Users, "Value", "Text"), null, new { @class = "form-control grid-multiselect", multiple = "multiple", data_grid_indicator = "indicatorgroups" })*@
+            @Html.ValidationMessageFor(m => m.Users, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <a href="@Url.Action("Index")" class="btn btn-danger">
+                <span class="glyphicon glyphicon-remove"></span> Отмена
+            </a>
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-ok aria-hidden=" true">
+                </span> Сохранить
+            </button>
+        </div>
+    </div>
+}
+

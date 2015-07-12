@@ -1,16 +1,21 @@
-﻿@model StankinQuestionnaire.Areas.User.Models.DocumentConstructor
+﻿@using StankinQuestionnaire.Web.Core.Enums
+@model StankinQuestionnaire.Areas.User.Models.DocumentConstructor
 @{
     ViewBag.Title = "Документ";
+    var readOnlyModeString = EditMode.ReadOnly.ToString();
 }
 <script>
     var documentData={
         documentID:@Model.DocumentID,
-        maxPoint:@Model.MaxPoint
-        };
+        maxPoint:@Model.MaxPoint,
+        mode:'@Model.Mode'
+    };
 </script>
 @section scripts{
     @Scripts.Render("~/bundles/Angular")
     <script src="~/Scripts/Сontrollers/Services.js"></script>
+    <script src="~/Scripts/angular-sanitize.js"></script>
+    <script src="~/Scripts/Сontrollers/directives.js"></script>
     <script src="~/Scripts/Сontrollers/document.js"></script>
     <script src="~/Scripts/Сontrollers/filters.js"></script>
 }
@@ -21,17 +26,51 @@
         </div>
         <div class="alert alert-info" role="alert">Набрано баллов: {{document.Point}}</div>
         <div ng-repeat="indicatorGroup in document.IndicatorGroups" class="indicator-group container">
+            <div class="checked-container" ng-show="indicatorGroup.Checked"></div>
             <div class="row  indicator-group-row">
                 <h2 class="col-md-6">{{indicatorGroup.Name}}</h2>
-                <span class="col-md-6 "> Максимальное количество баллов: {{indicatorGroup.MaxPoint}}</span>
+                <div class="col-md-6">
+                    Максимальное количество баллов: {{indicatorGroup.MaxPoint}}
+                    <div class="pull-right checkbox-container" ng-show="mode==='Checker'">
+                        Проверено <input type="checkbox" class="checked-checkbox" ng-model="indicatorGroup.Checked" ng-click="changeCheck(indicatorGroup)" />
+                    </div>
+                </div>
             </div>
             <div ng-repeat="indicator in indicatorGroup.Indicators" class="indicator row">
                 <h4 class="col-md-6"> {{indicator.Name}}</h4>
                 <div class="col-md-6">
                     <div ng-repeat="calculationType in indicator.CalculationTypes" class="calculation-type">
-                        <button type="button" ng-click="btnAdd(calculationType.UnitName,calculationType.CalculationTypeID)" class="btn btn-success btn-xs">
+                       @if(Model.Mode!=EditMode.ReadOnly){ <button type="button" ng-click="btnAdd(calculationType.UnitName,calculationType.CalculationTypeID)" class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        </button>   {{calculationType.Point}} баллов<span class="max-point-span"> {{calculationType.MaxPoint | maxPoint}}</span> - {{calculationType.UnitName}}  <a href="" ng-click="viewCalculations(calculationType)">{{calculationType.Calculations.length | viewLength}}</a>
+                        </button>}   {{calculationType.Point}} баллов<span class="max-point-span"> {{calculationType.MaxPoint | maxPoint}}
+                        </span> - {{calculationType.UnitName}}  <a href="" ng-click="viewCalculations(calculationType)">{{calculationType.Calculations.length | viewLength}}</a>
+                        <div class="calculations">
+                            <div class="calculation" ng-repeat="calculation in calculationType.Calculations">
+                                @if(Model.Mode!=EditMode.ReadOnly)
+                                { 
+                                <div class="calculation-command">
+                                    <button ng-show="!editable(calculation)" type="button" class="btn btn-info btn-xs" ng-click="editCalculation(calculation)">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                                        </span>
+                                    </button>
+                                    <button ng-show="editable(calculation)" type="button" class="btn btn-success btn-xs" ng-click="saveCalculation(calculation)">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true">
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btnDelete btn-xs" data-toggle="modal" data-target="#delete-calculation" ng-click="setCalculationForDelete(calculation)">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                        </span>
+                                    </button>
+                                </div>
+                                }
+                                <div class="calculation-text">
+                                    <span class="calculation-index">{{$index+1}})</span>
+                                    <div contenteditable="{{editable(calculation)}}" ng-model="calculation.Description"
+                                          class="calculation-description"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,6 +98,23 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
                         <button type="button" class="btn btn-primary ladda-button" data-size="xs" data-style="expand-left" ng-click="saveAdd()" id="btnSaveEdit"><span class="ladda-label">Сохранить</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-sm" id="delete-calculation" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-grid-key-value="">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="title">Вы действительно хотите удалить запись?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+                            <button type="button" class="btn btn-warning" ng-click="deleteCalculation()" data-dismiss="modal">Да</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,72 @@
+﻿@model StankinQuestionnaire.Areas.Admin.Models.ReviewerEditModel
+@{
+    ViewBag.Title = "Редактирование";
+}
+@section scripts{
+    @Scripts.Render("~/bundles/dependSelect")
+}
+<div class="hide" id="template">
+    <select id="doc-type-select">
+        @foreach (var documentType in Model.DocumentTypes)
+        {
+            <option value="@documentType.DocumentTypeID">@documentType.Name</option>
+        }
+    </select>
+    @foreach (var indicatorGroup in Model.IndicatorGroups)
+    {
+        <select data-document-typeid="@indicatorGroup.DocumentTypeID">
+            @foreach (var indicatorSelect in indicatorGroup.SelectList)
+            {
+                <option value="@indicatorSelect.IndicatorGroupID">@indicatorSelect.Name</option>
+            }
+        </select>
+    }
+</div>
+
+<h3>@Model.Name</h3>
+<h4>Выберите группы показателей, к которым у проверяющего будет доступ</h4>
+@using (Html.BeginForm("Edit", "Reviewer", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div id="review-lines">
+        @foreach (var selectedIndicatorGroupID in Model.SelectedIndicatorGroupsID)
+        {
+            var selectedIndicatorGroup = Model.FindIndicatorGroupByIndicatorGroupID(selectedIndicatorGroupID);
+            <div class="form-inline review-line">
+                <div class="form-group">
+                    <label>Документ</label>
+                    <select class="form-control document-type-select">
+                        @foreach (var documentType in Model.DocumentTypes)
+                        {
+                            <option value="@documentType.DocumentTypeID" @(selectedIndicatorGroup.DocumentTypeID == @documentType.DocumentTypeID ? "selected=selected" : "")>@documentType.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Группа показателей</label>
+                    <select class="form-control" name="SelectedIndicatorGroupsID">
+                        @foreach (var indicatorGroup in selectedIndicatorGroup.SelectList)
+                        {
+                            <option value="@indicatorGroup.IndicatorGroupID" @(indicatorGroup.IndicatorGroupID == selectedIndicatorGroupID ? "selected=selected" : "")>@indicatorGroup.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-danger" id="btn-review-delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group add-review">
+        <button type="button" class="btn btn-info" id="btn-add">
+            <span class="glyphicon glyphicon-plus"></span> Добавить
+        </button>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">
+            <span class="glyphicon glyphicon-ok aria-hidden=" true">
+            </span> Сохранить
+        </button>
+    </div>
+}

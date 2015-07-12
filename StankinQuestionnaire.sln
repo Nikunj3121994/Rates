@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StankinQuestionnaire.Core",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StankinQuestionnaire.Web.Core", "StankinQuestionnaire.Web.Core\StankinQuestionnaire.Web.Core.csproj", "{F5D3147B-2FF6-44C7-8561-03821F7657D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stankin.Test", "Stankin.Test\Stankin.Test.csproj", "{3E101532-8493-4BEF-BC8B-B3E99EB92FE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StankinQuestionnaire.Data.Models", "StankinQuestionnaire.Data.Models\StankinQuestionnaire.Data.Models.csproj", "{669146FE-D2AA-47C2-8F1E-553E0889A948}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,14 @@ Global
 		{F5D3147B-2FF6-44C7-8561-03821F7657D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D3147B-2FF6-44C7-8561-03821F7657D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D3147B-2FF6-44C7-8561-03821F7657D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E101532-8493-4BEF-BC8B-B3E99EB92FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E101532-8493-4BEF-BC8B-B3E99EB92FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E101532-8493-4BEF-BC8B-B3E99EB92FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E101532-8493-4BEF-BC8B-B3E99EB92FE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{669146FE-D2AA-47C2-8F1E-553E0889A948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{669146FE-D2AA-47C2-8F1E-553E0889A948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{669146FE-D2AA-47C2-8F1E-553E0889A948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{669146FE-D2AA-47C2-8F1E-553E0889A948}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

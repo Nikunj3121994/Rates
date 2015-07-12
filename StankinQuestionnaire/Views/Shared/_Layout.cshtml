@@ -1,0 +1,92 @@
+﻿@using StankinQuestionnaire.Core.Enums
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title – приложение ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/ladda")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>*@
+                @Html.ActionLink("Показатели результативности", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.IsInRole(RoleEnum.Admin.ToString()))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Работа с документами<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Типы документов", "Index", "DocumentType", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Группы показателей", "Index", "IndicatorGroup", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Показатели", "Index", "Indicator", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Типы подсчета", "Index", "CalculationType", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Логирование", "Index", "DocumentLog", new { Area = "Admin" }, null)</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-expanded="false">Пользователи<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Все пользователи", "Index", "User", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Добавить из файла", "AddFromFile", "User", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Проверяющие", "Index", "Reviewer", new { Area = "Admin" }, null)</li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole(RoleEnum.Reviewer.ToString()))
+                    {
+                        <li>@Html.ActionLink("Проверка", "Index", "Check", new { Area = "Admin" }, null)</li>
+                    }
+                    @if (User.IsInRole(RoleEnum.Admin.ToString()))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="menu" aria-expanded="false">Справочники<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    @Html.ActionLink("Ученые звания для расчета рейтинга", "Index", "Rating", new { Area = "Admin" }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Должности", "Index", "AcademicRank", new { Area = "Admin" }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Кафедры", "Index", "Subdivision", new { Area = "Admin" }, null)
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="page-header">
+            @*<h1>@ViewBag.Title</h1>*@
+        </div>
+        @RenderBody()
+        <hr />
+        <footer>
+            @*<p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>*@
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/ladda")
+    @Scripts.Render("~/bundles/Delete")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

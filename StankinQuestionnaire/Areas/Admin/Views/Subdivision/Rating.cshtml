@@ -1,0 +1,29 @@
+﻿@model IEnumerable<StankinQuestionnaire.Areas.Admin.Models.SubdivisionRating>
+@{
+    ViewBag.Title = "Rating";
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Место
+            </th>
+            <th>
+                Кафедра 
+            </th>
+            <th>
+                Среднее количество балов
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rating in Model.OrderBy(r => r.Position))
+        {
+            <tr>
+                <td>@rating.Position</td>
+                <td>@rating.Name</td>
+                <td>@rating.Point</td>
+            </tr>
+        }
+    </tbody>
+</table>
